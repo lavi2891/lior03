@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function TeamSelect() {
+function TeamSelect({ onSelect }) {
   const [selectedTeam, setSelectedTeam] = useState('');
   const [teams, setTeams] = useState([]); // To store the list of development teams
 
@@ -24,11 +24,15 @@ function TeamSelect() {
   }, []);
 
   // Handle team selection here
+  const handleTeamSelection = (team) => {
+    setSelectedTeam(team);
+    onSelect(team); // Call the onSelect function and pass the selected team
+  };
 
   return (
     <div>
       <label>Select a Development Team:</label>
-      <select onChange={(e) => setSelectedTeam(e.target.value)} value={selectedTeam}>
+      <select onChange={(e) => handleTeamSelection(e.target.value)} value={selectedTeam}>
         <option value="">Select a Team</option>
         {teams.map((team) => (
           <option key={team.team_code} value={team.team_code}>
