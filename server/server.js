@@ -44,9 +44,9 @@ app.get('/api/teams', (req, res) => {
 });
 
 // Retrieve meetings for a specific team by team code
-app.get('/api/meetings/:teamCode', (req, res) => {
-  const teamCode = req.params.teamCode;
-  db.query('SELECT * FROM meetings WHERE team_code = ?', [teamCode], (err, results) => {
+app.get('/api/meetings/:team_code', (req, res) => {
+  const teamCode = req.params.team_code;
+  db.query('SELECT * FROM meetings WHERE team_code = ?', [parseInt(teamCode)], (err, results) => {
     if (err) {
       console.error('Error fetching meetings:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -58,12 +58,12 @@ app.get('/api/meetings/:teamCode', (req, res) => {
 
 // Add a new meeting
 app.post('/api/meetings', (req, res) => {
-  const { title, date, time, location, description } = req.body;
+  const { title, start_date, start_time, end_date, end_time, location, description, meeting_room, team_code } = req.body;
   
   // Assuming you have a "meetings" table with appropriate columns
   db.query(
-    'INSERT INTO meetings (title, date, time, location, description) VALUES (?, ?, ?, ?, ?)',
-    [title, date, time, location, description],
+    'INSERT INTO meetings (title, start_date, start_time, end_date, end_time, location, description, meeting_room, team_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [title, start_date, start_time, end_date, end_time, location, description, meeting_room, team_code],
     (err, result) => {
       if (err) {
         console.error('Error adding meeting:', err);
